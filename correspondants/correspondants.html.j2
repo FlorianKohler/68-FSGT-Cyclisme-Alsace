@@ -1,0 +1,13 @@
+{% extends "index.html.j2" %}
+
+{% block relativePath %}../{% endblock relativePath %}
+
+{% block content %}
+
+<div w3-include-html="correspondants_content.html"></div>
+<script>
+includeHTML();
+</script>
+
+
+{% endblock content %}

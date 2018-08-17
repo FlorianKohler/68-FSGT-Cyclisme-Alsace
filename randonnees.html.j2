@@ -1,0 +1,43 @@
+{% extends "index.html.j2" %}
+
+{% block content %}
+
+
+
+<div class="table-responsive">
+	<table class="table table-striped table-hover">
+		<tbody><tr>
+			<th>Date</th>
+			<th>Nom</th>
+			<th>Organisateur</th>
+			<th class="text-center">Publication</th>
+		</tr>
+
+    {% for x, line in calendar.iterrows() %}
+    <tr class="">
+      <td class="">{{line["Date"]}}</td>
+      <td class="">{{line["Nom"]}}
+				{%- if line["Info"]|length >0 -%}
+					<br><font color="red"><u>{{line["Info"]}}</u></font>
+				{% endif %}
+			</td>
+      <td class="">{{line["Club"]}}</td>
+      <td class="text-center">
+        {% if line["publi_dispo"] == True %}
+        <a href="{{ line["lien_publi"] }}">
+				<img  src="./Styling/images/loupe.png" width="22" height="22"></a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+
+	</tbody></table>
+</div>
+
+<div style="text-align:center;">
+<p> * Un bonus de 20 points est accordé aux participants dans le Trophée Rector'cup</p>
+<h3><a href="./randonnees/participations_randonnees.pdf">Participation aux Randonnées 2018</a></h3>
+</div>
+
+
+{% endblock content %}

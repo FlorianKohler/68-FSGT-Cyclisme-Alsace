@@ -1,0 +1,113 @@
+@charset "utf-8";
+/* CSS Document */
+
+ body {
+	/* background-color: #2f68c1; */
+  background-image: url("../images/fond.jpg");
+  background-repeat: repeat;
+	font-family: 'Roboto', sans-serif;
+
+}
+
+img.logo-header {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  min-width: 300px;
+}
+
+.navbar {
+  margin-top : 10px;
+}
+
+ /**********************************
+Responsive navbar-brand image CSS
+- Remove navbar-brand padding for firefox bug workaround
+- add 100% height and width auto ... similar to how bootstrap img-responsive class works
+***********************************/
+
+.navbar-brand {
+  padding: 2px;
+}
+.navbar-brand>img {
+  height: 100%;
+  padding: 0px;
+  width: auto;
+}
+
+.container {
+  background-color: #FFF;
+}
+
+.topOrBottom {
+  background-color: transparent;  
+}
+
+td {
+  white-space: normal !important; // To consider whitespace.
+}
+
+/*************************
+EXAMPLES 2-7 BELOW
+**************************/
+
+/* EXAMPLE 2 (larger logo) - simply adjust top bottom padding to make logo larger */
+
+.example2 .navbar-brand>img {
+  padding: 0px;
+}
+
+.example2 .navbar-brand {
+  height: 80px;
+}
+/* EXAMPLE 3
+
+line height is 20px by default so add 30px top and bottom to equal the new .navbar-brand 80px height  */
+
+.example3 .navbar-brand {
+  height: 80px;
+}
+
+.example2 .nav >li >a {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.example2 .navbar-toggle {
+  padding: 10px;
+  margin: 25px 15px 25px 0;
+}
+
+
+
+
+
+/* EXAMPLE 8 - Center on mobile*/
+	@media only screen and (max-width : 768px){
+
+
+.navbar-toggle {
+    z-index: 1;
+}
+
+
+/* CSS Transform Align Navbar Brand Text ... This could also be achieved with table / table-cells */
+.navbar-alignit .navbar-header {
+	  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  height: 50px;
+}
+.navbar-alignit .navbar-brand {
+	top: 50%;
+	display: block;
+	position: relative;
+	height: auto;
+	transform: translate(0,-50%);
+	margin-right: 15px;
+  margin-left: 15px;
+}
+
+.navbar-nav>li>.dropdown-menu {
+	z-index: 9999;
+}
