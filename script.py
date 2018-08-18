@@ -11,12 +11,6 @@ import datetime
 import time
 
 
-year = 2018
-month = 5
-day = 12
-nd = datetime.datetime(2018,5,12)
-print(nd)
-
 dir_path=os.path.dirname(os.path.abspath(__file__))
 filename = dir_path + "\\Calendrier.csv"
 #os.chdir(dname)
@@ -26,7 +20,7 @@ fsloader = jinja2.FileSystemLoader(dir_path) #dossier ou se trouve les template
 env = jinja2.Environment(loader=fsloader)
 
 df = pd.read_excel("Calendrier.xlsx")
-print(df)
+
 
 dict_discipline = {'VTT': 'VTT', 'Route': 'route', 'Grimpée': 'grimpees', 'Randonnée': 'randonnees', 'Cyclo-cross' : "cyclo_cross"}
 
@@ -40,7 +34,6 @@ def j(a):
 df["lien_publi"] = np.where(df["FileName"].apply(j), df["FileName"] ,"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + ".pdf")
 
 df["lien_resul"] = "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf"
-print(df)
 
 seconds = os.path.getmtime("./route/publications/Publication_Seppois.pdf")
 a = datetime.datetime.strptime(time.ctime(seconds), "%a %b %d %H:%M:%S %Y").year
@@ -51,7 +44,6 @@ def f(x):
 def g(x):
     if f(x) == False:
         return 0
-    print(os.path.getmtime(x))
     return os.path.getmtime(x)
 
 

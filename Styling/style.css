@@ -13,12 +13,13 @@ img.logo-header {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 40%;
-  min-width: 300px;
+  width: 25%;
+  min-width: 250px;
 }
 
 .navbar {
   margin-top : 10px;
+  background-color: #fef0f0;
 }
 
  /**********************************
@@ -41,7 +42,7 @@ Responsive navbar-brand image CSS
 }
 
 .topOrBottom {
-  background-color: transparent;  
+  background-color: transparent;
 }
 
 td {
@@ -76,11 +77,29 @@ line height is 20px by default so add 30px top and bottom to equal the new .navb
 .example2 .navbar-toggle {
   padding: 10px;
   margin: 25px 15px 25px 0;
+  color:black;
 }
 
+.example2 .dropdown-toggle:active, .open .dropdown-toggle {
+    background:#feebeb !important;
+}
 
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #F4F9FF; // Choose your own color here
+ }
 
+ .table-striped>tbody>tr:nth-child(even)>td,
+ .table-striped>tbody>tr:nth-child(even)>th {
+    background-color: #FCF4FF; // Choose your own color here
+  }
 
+.navbar-default .navbar-toggle {
+  border-color: black;
+}
+
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a {
+    color: black;
 
 /* EXAMPLE 8 - Center on mobile*/
 	@media only screen and (max-width : 768px){
