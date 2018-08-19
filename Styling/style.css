@@ -80,6 +80,34 @@ line height is 20px by default so add 30px top and bottom to equal the new .navb
   color:black;
 }
 
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: black;
+}
+
+.navbar-toggle .button-label {
+    display: inline-block;
+    float: left;
+    font-weight: bold;
+    line-height: 12px;
+    padding-right: 10px;
+}
+
+@media only screen and (max-width : 400px){
+
+  .navbar-toggle .button-label {
+      display: none;
+      float: left;
+      font-weight: bold;
+      line-height: 0px;
+      padding-right: 0px;
+  }
+}
+
+.button-bars {
+    display: inline-block;
+    float: left;
+}
+
 .example2 .dropdown-toggle:active, .open .dropdown-toggle {
     background:#feebeb !important;
 }
@@ -100,9 +128,11 @@ line height is 20px by default so add 30px top and bottom to equal the new .navb
 
 .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a {
     color: black;
+  }
+
+
 
 /* EXAMPLE 8 - Center on mobile*/
-	@media only screen and (max-width : 768px){
 
 
 .navbar-toggle {
