@@ -29,7 +29,7 @@ Responsive navbar-brand image CSS
 ***********************************/
 
 .navbar-brand {
-  padding: 2px;
+  padding: 0px;
 }
 .navbar-brand>img {
   height: 100%;
@@ -39,6 +39,12 @@ Responsive navbar-brand image CSS
 
 .container {
   background-color: #FFF;
+}
+
+@media (min-width: 850px) and (max-width: 992px) {
+    .container{
+        width: 830px;
+    }
 }
 
 .topOrBottom {
