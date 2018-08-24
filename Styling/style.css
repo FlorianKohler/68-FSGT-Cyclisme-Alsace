@@ -19,7 +19,7 @@ img.logo-header {
 
 .navbar {
   margin-top : 10px;
-  background-color: #fef0f0;
+  background-color: #f2f3f7;
 }
 
  /**********************************
@@ -115,7 +115,7 @@ line height is 20px by default so add 30px top and bottom to equal the new .navb
 }
 
 .example2 .dropdown-toggle:active, .open .dropdown-toggle {
-    background:#feebeb !important;
+    background:#e2e4ed !important;
 }
 
 .table-striped>tbody>tr:nth-child(odd)>td,
