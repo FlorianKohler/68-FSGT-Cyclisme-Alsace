@@ -13,6 +13,8 @@ import datetime
 import time
 
 
+
+
 dir_path=os.path.dirname(os.path.abspath(__file__))
 filename = dir_path + "\\Calendrier.csv"
 #os.chdir(dname)
@@ -33,12 +35,22 @@ df = df.replace(np.nan, "", regex=True)
 def j(a):
     return(a.startswith("http"))
 
-df["lien_publi"] = np.where(df["FileName"].apply(j), df["FileName"] ,"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + ".pdf")
+df["lien_publi"] = np.where(df["FileName"].apply(j), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + ".pdf")
+# If it is a link : the link. Else : every thing else
 
-df["lien_resul"] = "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf"
+df["lien_resul"] = np.where(df["FileName"].apply(j), df["FileName"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf")
+
+
+#engagés ou horaires
+df["lien_engages"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Liste_engages_" + df["FileName"] + ".pdf"
+df["lien_horaires_depart"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Horaires_depart_" + df["FileName"] + ".pdf"
+
+
 
 seconds = os.path.getmtime("./route/publications/Publication_Seppois.pdf")
 a = datetime.datetime.strptime(time.ctime(seconds), "%a %b %d %H:%M:%S %Y").year
+b = datetime.datetime.strptime(time.ctime(seconds), "%a %b %d %H:%M:%S %Y").month
+print(b)
 
 #df["publi_dispo"] = datetime.datetime.strptime(time.ctime(os.path.getmtime("Publication_Seppois.pdf")), "%a %b %d %H:%M:%S %Y").year == 2018
 def f(x):
@@ -51,6 +63,8 @@ def g(x):
 
 df["publi_dispo"] = False
 df["resul_dispo"] = False
+df["horaires_dispo"] = False
+df["engages_dispo"] = False
 
 for i in range(len(df)):
     if j(df.iloc[i]['lien_publi']): #link
@@ -61,6 +75,12 @@ for i in range(len(df)):
     if f(df.iloc[i]['lien_resul']) == True:
         df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year == 2018    )
 
+    if f(df.iloc[i]['lien_horaires_depart']) == True:
+        df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year == 2018 and  datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").month >= b-1    )
+    if f(df.iloc[i]['lien_engages']) == True:
+        df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2018  and  datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").month >= b-1 )
+
+print()
 
 route_df = df[df["Discipline"] == "Route"]
 vtt_df = df[df["Discipline"] == "VTT"]

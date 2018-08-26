@@ -28,12 +28,21 @@
         <a href="{{ line["lien_publi"] }}">
 				<img  src="./Styling/images/loupe.png" width="22" height="22"></a>
         {% endif %}
+				{% if line["horaires_dispo"] == True %}
+				<a href="{{ line["lien_horaires_depart"] }}">
+				<img  src="./Styling/images/details.png" width="22" height="22"></a>
+				{% endif %}
+				{% if line["engages_dispo"] == True %}
+				<a href="{{ line["lien_engages"] }}">
+				<img  src="./Styling/images/details.png" width="22" height="22"></a>
+				{% endif %}
       </td>
       <td class="text-center">
         {% if line["resul_dispo"] == True %}
         <a href="{{ line["lien_resul"] }}">
         <img  src="./Styling/images/podium.png" width="26" height="22"></a>
         {% endif %}
+
       </td>
     </tr>
     {% endfor %}
