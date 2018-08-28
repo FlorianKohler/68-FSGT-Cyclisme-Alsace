@@ -34,6 +34,10 @@
         <a href="{{ line["lien_resul"] }}">
         <img  src="./Styling/images/podium.png" width="26" height="22"></a>
         {% endif %}
+				{% if line["resul1_dispo"] == True %}
+				<a href="{{ line["lien_resul1"] }}">
+				<img  src="./Styling/images/podium.png" width="26" height="22"></a>
+				{% endif %}
       </td>
     </tr>
     {% endfor %}

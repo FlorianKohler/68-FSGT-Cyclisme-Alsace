@@ -39,7 +39,7 @@ df["lien_publi"] = np.where(df["FileName"].apply(j), df["FileName"],"./" + df["D
 # If it is a link : the link. Else : every thing else
 
 df["lien_resul"] = np.where(df["FileName"].apply(j), df["FileName"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf")
-
+df["lien_resul1"] = np.where(df["FileName"].apply(j), df["FileName"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + "1.pdf")
 
 #engagés ou horaires
 df["lien_engages"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Liste_engages_" + df["FileName"] + ".pdf"
@@ -63,6 +63,7 @@ def g(x):
 
 df["publi_dispo"] = False
 df["resul_dispo"] = False
+df["resul1_dispo"] = False
 df["horaires_dispo"] = False
 df["engages_dispo"] = False
 
@@ -74,13 +75,14 @@ for i in range(len(df)):
         df.iloc[i, df.columns.get_loc('publi_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi'])), "%a %b %d %H:%M:%S %Y").year == 2018    )
     if f(df.iloc[i]['lien_resul']) == True:
         df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year == 2018    )
+    if f(df.iloc[i]['lien_resul1']) == True:
+        df.iloc[i, df.columns.get_loc('resul1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul1'])), "%a %b %d %H:%M:%S %Y").year == 2018    )
 
     if f(df.iloc[i]['lien_horaires_depart']) == True:
         df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year == 2018 and  datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").month >= b-1    )
     if f(df.iloc[i]['lien_engages']) == True:
         df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2018  and  datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").month >= b-1 )
 
-print()
 
 route_df = df[df["Discipline"] == "Route"]
 vtt_df = df[df["Discipline"] == "VTT"]
