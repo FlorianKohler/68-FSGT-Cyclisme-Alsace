@@ -72,11 +72,11 @@ for i in range(len(df)):
         df.iloc[i, df.columns.get_loc('publi_dispo')] = True
 
     if f(df.iloc[i]['lien_publi']) == True:
-        df.iloc[i, df.columns.get_loc('publi_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi'])), "%a %b %d %H:%M:%S %Y").year == 2018    )
+        df.iloc[i, df.columns.get_loc('publi_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi'])), "%a %b %d %H:%M:%S %Y").year in (2018, 2019)   )
     if f(df.iloc[i]['lien_resul']) == True:
-        df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year == 2018    )
+        df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year in (2018, 2019)    )
     if f(df.iloc[i]['lien_resul1']) == True:
-        df.iloc[i, df.columns.get_loc('resul1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul1'])), "%a %b %d %H:%M:%S %Y").year == 2018    )
+        df.iloc[i, df.columns.get_loc('resul1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul1'])), "%a %b %d %H:%M:%S %Y").year in (2018 , 2019)   )
 
     if f(df.iloc[i]['lien_horaires_depart']) == True:
         df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year == 2018 and  datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").month >= b-1    )
