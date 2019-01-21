@@ -96,7 +96,7 @@ split = 0
 for i in range(len(df)):
     if df.iloc[i]["date_obj"] >= today: #link
         if df.iloc[i]["date_obj"] == today:
-            # Une ocourse aujourd'hui est consideree comme une course passee
+            # Une course aujourd'hui est consideree comme une course passee
             j=i+1
             while df.iloc[j]["date_obj"] == today:
                 j+=1
