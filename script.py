@@ -29,6 +29,8 @@ def j(a):
     return(a.startswith("http"))
 
 df["lien_publi"] = np.where(df["FileName"].apply(j), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + ".pdf")
+df["lien_publi1"] = np.where(df["FileName"].apply(j), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + "1.pdf")
+
 # If it is a link : the link. Else : every thing else
 
 df["lien_resul"] = np.where(df["FileName"].apply(j), df["FileName"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf")
@@ -70,6 +72,7 @@ def get_date(date_string):
     return datetime.date(2019, liste_mois[month], day)
 
 df["publi_dispo"] = False
+df["publi1_dispo"] = False
 df["resul_dispo"] = False
 df["resul1_dispo"] = False
 df["horaires_dispo"] = False
@@ -81,6 +84,9 @@ for i in range(len(df)):
         df.iloc[i, df.columns.get_loc('publi_dispo')] = True
     if f(df.iloc[i]['lien_publi']) == True:
         df.iloc[i, df.columns.get_loc('publi_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi'])), "%a %b %d %H:%M:%S %Y").year == 2019   )
+    if f(df.iloc[i]['lien_publi1']) == True:
+        df.iloc[i, df.columns.get_loc('publi1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi1'])), "%a %b %d %H:%M:%S %Y").year == 2019   )
+
     if f(df.iloc[i]['lien_resul']) == True:
         df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year == 2019    )
     if f(df.iloc[i]['lien_resul1']) == True:
