@@ -13,7 +13,6 @@ import datetime
 import time
 
 dir_path=os.path.dirname(os.path.abspath(__file__))
-filename = dir_path + "\\Calendrier.csv"
 #os.chdir(dname)
 
 fsloader = jinja2.FileSystemLoader(dir_path) #dossier ou se trouve les template
