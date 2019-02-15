@@ -29,6 +29,10 @@
         <a href="{{ line["lien_publi"] }}">
 				<img  src="./Styling/images/loupe.png" width="22" height="22"></a>
         {% endif %}
+				{% if line["publi1_dispo"] == True %}
+				<a href="{{ line["lien_publi1"] }}">
+				<img  src="./Styling/images/loupe.png" width="22" height="22"></a>
+				{% endif %}
 				{% if line["horaires_dispo"] == True %}
 				<a href="{{ line["lien_horaires_depart"] }}">
 				<img  src="./Styling/images/details.png" width="22" height="22"></a>
