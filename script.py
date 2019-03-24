@@ -40,6 +40,9 @@ df["lien_engages"] = "./" + df["Discipline"].map(dict_discipline) + "/publicatio
 df["lien_horaires_depart"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Horaires_depart_" + df["FileName"] + ".pdf"
 
 today = datetime.date.today()
+if datetime.datetime.now().hour < 15:
+    today = today - datetime.timedelta(1)
+
 current_year = today.year
 current_month = today.month
 
@@ -97,6 +100,7 @@ for i in range(len(df)):
         df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2019 )  #and  datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").month >= b-1 )
 
 # For home page, find which the first course that has not happened (next one)
+print(datetime.datetime.now().hour)
 split = 0
 for i in range(len(df)):
     if df.iloc[i]["date_obj"] >= today: #link
