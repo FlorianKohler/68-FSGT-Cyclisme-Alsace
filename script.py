@@ -40,7 +40,7 @@ df["lien_engages"] = "./" + df["Discipline"].map(dict_discipline) + "/publicatio
 df["lien_horaires_depart"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Horaires_depart_" + df["FileName"] + ".pdf"
 
 today = datetime.date.today()
-if datetime.datetime.now().hour < 15:
+if datetime.datetime.now().hour < 14:
     today = today - datetime.timedelta(1)
 
 current_year = today.year
@@ -95,12 +95,13 @@ for i in range(len(df)):
         df.iloc[i, df.columns.get_loc('resul1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul1'])), "%a %b %d %H:%M:%S %Y").year == 2019   )
 
     if f(df.iloc[i]['lien_horaires_depart']) == True:
-        df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year == 2019 and  datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").month >= current_month-1    )
+            #start list is displayed if : current_year is correct and race has not already taken place (date_race > today, with today starting at 2pm)
+        df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year == 2019 and df.iloc[i]["date_obj"] > today)
     if f(df.iloc[i]['lien_engages']) == True:
-        df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2019 )  #and  datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").month >= b-1 )
+        #start list is displayed if : current_year is correct and race has not already taken place (date_race > today, with today starting at 2pm)
+        df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2019 and df.iloc[i]["date_obj"] > today)
 
 # For home page, find which the first course that has not happened (next one)
-print(datetime.datetime.now().hour)
 split = 0
 for i in range(len(df)):
     if df.iloc[i]["date_obj"] >= today: #link
@@ -115,7 +116,10 @@ for i in range(len(df)):
         break
 
 last_races_df = df[max(split-5,0): split]
+last_races_df = last_races_df[last_races_df["Info"] != "Annulé"] # if cancalled : no results so should not be displayed here.
+
 next_races_df = df[split: min(len(df), split+4 )]
+# maybe not here too. to be thought about.
 
 route_df = df[df["Discipline"] == "Route"]
 vtt_df = df[df["Discipline"] == "VTT"]
