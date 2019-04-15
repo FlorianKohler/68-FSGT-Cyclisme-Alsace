@@ -1,6 +1,6 @@
 @echo off
-py script.py
 git pull
+py script.py
 git add *
 git commit -m "auto push"
 git push
