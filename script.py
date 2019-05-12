@@ -116,7 +116,10 @@ for i in range(len(df)):
         break
 
 last_races_df = df[max(split-5,0): split]
-last_races_df = last_races_df[last_races_df["Info"] != "Annulé"] # if cancalled : no results so should not be displayed here.
+last_races_df = last_races_df[last_races_df["Info"] != "Annulé"] # if cancelled : no results so should not be displayed here.
+last_races_df = last_races_df[last_races_df["Discipline"] != "Randonnée"] # if randonnée: no results so should not be displayed here.
+#Careful : might lead to super small last_races_df !
+
 
 next_races_df = df[split: min(len(df), split+4 )]
 # maybe not here too. to be thought about.
