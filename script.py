@@ -101,8 +101,18 @@ for i in range(len(df)):
         #start list is displayed if : current_year is correct and race has not already taken place (date_race > today, with today starting at 2pm)
         df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2019 and df.iloc[i]["date_obj"] > today)
 
-# For home page, find which the first course that has not happened (next one)
+# For home page, find which the first course that has not happened (next one) 
+
+
+##### bug when the year of the calendar is not the current year (ex : few first dates in January before the calendar is updated)
+today = datetime.date(2019, 12, 31) #Putting manually today to 31st December of previous year
+##### Here an alternative which does not solve the problem
+
 split = 0
+# provisionary split is another one
+split = len(df)-1 #really provisional with the championship cx coming
+#if last race in calendar => nothing found
+
 for i in range(len(df)):
     if df.iloc[i]["date_obj"] >= today: #link
         if df.iloc[i]["date_obj"] == today:
@@ -120,11 +130,12 @@ last_races_df = df[max(split-10,0): split] #taking 10 races to make sure we have
 last_races_df = last_races_df[(~(last_races_df["Info"].str.contains("Annulé", na=False)))] # if cancelled : no results so should not be displayed here.
 last_races_df = last_races_df[last_races_df["Discipline"] != "Randonnée"] # if randonnée: no results so should not be displayed here.
 
-last_races_df = last_races_df.tail(5) #taking the last four ones
-
+last_races_df = last_races_df.tail(5) #taking the last five ones
 
 next_races_df = df[split: min(len(df), split+4 )]
 # maybe not here too. to be thought about.
+# Start loop again on df
+
 
 route_df = df[df["Discipline"] == "Route"]
 vtt_df = df[df["Discipline"] == "VTT"]
