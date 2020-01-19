@@ -23,7 +23,7 @@ df = df.replace(np.nan, "", regex=True)
 
 dict_discipline = {'VTT': 'VTT', 'Route': 'route', 'Grimpée': 'grimpees', 'Randonnée': 'randonnees', 'Cyclo-cross' : "cyclo_cross"}
 
-#df["lien_publi"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + ".pdf"
+
 def j(a):
     return(a.startswith("http"))
 
@@ -38,6 +38,7 @@ df["lien_resul1"] = np.where(df["FileName"].apply(j), df["FileName"], "./" + df[
 #engagés ou horaires
 df["lien_engages"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Liste_engages_" + df["FileName"] + ".pdf"
 df["lien_horaires_depart"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Horaires_depart_" + df["FileName"] + ".pdf"
+
 
 today = datetime.date.today()
 if datetime.datetime.now().hour < 14:
@@ -69,9 +70,11 @@ def get_date(date_string):
             month_found = True
 
     if month_found == False or day_found == False or day>31:
+        print(date_string)
         print("ATTENTION : Format de date incorrect")
 
-    return datetime.date(2019, liste_mois[month], day)
+    return datetime.date(2020, liste_mois[month], day)
+
 
 df["publi_dispo"] = False
 df["publi1_dispo"] = False
@@ -85,21 +88,21 @@ for i in range(len(df)):
     if j(df.iloc[i]['lien_publi']): #link
         df.iloc[i, df.columns.get_loc('publi_dispo')] = True
     if f(df.iloc[i]['lien_publi']) == True:
-        df.iloc[i, df.columns.get_loc('publi_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi'])), "%a %b %d %H:%M:%S %Y").year == 2019   )
+        df.iloc[i, df.columns.get_loc('publi_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi'])), "%a %b %d %H:%M:%S %Y").year == 2020   )
     if f(df.iloc[i]['lien_publi1']) == True:
-        df.iloc[i, df.columns.get_loc('publi1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi1'])), "%a %b %d %H:%M:%S %Y").year == 2019   )
+        df.iloc[i, df.columns.get_loc('publi1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi1'])), "%a %b %d %H:%M:%S %Y").year == 2020   )
 
     if f(df.iloc[i]['lien_resul']) == True:
-        df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year == 2019    )
+        df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year == 2020    )
     if f(df.iloc[i]['lien_resul1']) == True:
-        df.iloc[i, df.columns.get_loc('resul1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul1'])), "%a %b %d %H:%M:%S %Y").year == 2019   )
+        df.iloc[i, df.columns.get_loc('resul1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul1'])), "%a %b %d %H:%M:%S %Y").year == 2020   )
 
     if f(df.iloc[i]['lien_horaires_depart']) == True:
             #start list is displayed if : current_year is correct and race has not already taken place (date_race > today, with today starting at 2pm)
-        df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year == 2019 and df.iloc[i]["date_obj"] > today)
+        df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year == 2020 and df.iloc[i]["date_obj"] > today)
     if f(df.iloc[i]['lien_engages']) == True:
         #start list is displayed if : current_year is correct and race has not already taken place (date_race > today, with today starting at 2pm)
-        df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2019 and df.iloc[i]["date_obj"] > today)
+        df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2020 and df.iloc[i]["date_obj"] > today)
 
 # For home page, find which the first course that has not happened (next one) 
 
