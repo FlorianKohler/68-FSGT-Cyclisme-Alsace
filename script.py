@@ -108,7 +108,7 @@ for i in range(len(df)):
 
 
 ##### bug when the year of the calendar is not the current year (ex : few first dates in January before the calendar is updated)
-today = datetime.date(2019, 12, 31) #Putting manually today to 31st December of previous year
+# today = datetime.date(2019, 12, 31) #Putting manually today to 31st December of previous year
 ##### Here an alternative which does not solve the problem
 
 split = 0
