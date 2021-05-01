@@ -130,7 +130,7 @@ for i in range(len(df)):
 
 last_races_df = df[max(split-10,0): split] #taking 10 races to make sure we have still 4 after removing cancelled races
 
-last_races_df = last_races_df[(~(last_races_df["Info"].str.contains("Annulé", na=False)))] # if cancelled : no results so should not be displayed here.
+last_races_df = last_races_df[(~(last_races_df["Info"].str.contains('Annulé|Reporté', na=False)))] # if cancelled : no results so should not be displayed here.
 last_races_df = last_races_df[last_races_df["Discipline"] != "Randonnée"] # if randonnée: no results so should not be displayed here.
 
 last_races_df = last_races_df.tail(5) #taking the last five ones
