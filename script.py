@@ -32,8 +32,8 @@ df["lien_publi1"] = np.where(df["FileName"].apply(j), df["FileName"],"./" + df["
 
 # If it is a link : the link. Else : every thing else
 
-df["lien_resul"] = np.where(df["FileName"].apply(j), df["FileName"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf")
-df["lien_resul1"] = np.where(df["FileName"].apply(j), df["FileName"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + "1.pdf")
+df["lien_resul"] = np.where(df["FileNameResults"].apply(j), df["FileNameResults"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf")
+df["lien_resul1"] = np.where(df["FileNameResults"].apply(j), df["FileNameResults"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + "1.pdf")
 
 #engagés ou horaires
 df["lien_engages"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Liste_engages_" + df["FileName"] + ".pdf"
@@ -92,6 +92,8 @@ for i in range(len(df)):
     if f(df.iloc[i]['lien_publi1']) == True:
         df.iloc[i, df.columns.get_loc('publi1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi1'])), "%a %b %d %H:%M:%S %Y").year == 2021   )
 
+    if j(df.iloc[i]['lien_resul']): #link
+        df.iloc[i, df.columns.get_loc('resul_dispo')] = True
     if f(df.iloc[i]['lien_resul']) == True:
         df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year == 2021    )
     if f(df.iloc[i]['lien_resul1']) == True:
@@ -134,6 +136,7 @@ last_races_df = last_races_df[(~(last_races_df["Info"].str.contains('Annulé|Rep
 last_races_df = last_races_df[last_races_df["Discipline"] != "Randonnée"] # if randonnée: no results so should not be displayed here.
 
 last_races_df = last_races_df.tail(5) #taking the last five ones
+
 
 next_races_df = df[split: min(len(df), split+4 )]
 # maybe not here too. to be thought about.
