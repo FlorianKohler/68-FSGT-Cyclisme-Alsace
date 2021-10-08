@@ -6,25 +6,39 @@
 
 <style>
 	.page-actu {
-    margin: 0;
+    margin: 1.5%;
     padding: 1.5%;
     border : 3px #282828;
     border-style: dotted;
 }
 
 .nouvelle {
+	text-align:center;
+	
     background: white;
     margin: 1%;
     padding: 0.5%;
+    padding-top:0%;
     text-align: center;
-    border : 2px #505050;
-    border-style: dotted;
+    padding-right:10%;
+	padding-left:10%;
+    /*border : 2px #505050;
+    border-style: dotted;*/
 }
 
+.nouvelle::after {
+    content: "";
+    background: -webkit-linear-gradient(left, rgba(0,72,153,1) 0%, rgba(227,6,19,1) 50%, rgba(0,72,153,1) 100%);
+    display: block;
+    height:2px;
+    width: 100%;
+
+}
 
 .nouvelle img
 {
-	width: 70%;
+	width: 90%;
+	margin-bottom: 1%;
 }
 .nouvelle h3
 {
@@ -36,6 +50,12 @@
 	font-weight : normal;
 }
 
+@media only screen and (max-width : 400px){
+.nouvelle img
+{
+	width: 90%;
+}
+}
 
 
 </style>
