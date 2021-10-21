@@ -24,56 +24,71 @@ df = df.replace(np.nan, "", regex=True)
 dict_discipline = {'VTT': 'VTT', 'Route': 'route', 'Grimpée': 'grimpees', 'Randonnée': 'randonnees', 'Cyclo-cross' : "cyclo_cross"}
 
 
-def j(a):
+def is_url(a):
     return(a.startswith("http"))
 
-df["lien_publi"] = np.where(df["FileName"].apply(j), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + ".pdf")
-df["lien_publi1"] = np.where(df["FileName"].apply(j), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + "1.pdf")
+df["lien_publi"] = np.where(df["FileName"].apply(is_url), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + ".pdf")
+df["lien_publi1"] = np.where(df["FileName"].apply(is_url), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + "1.pdf")
 
 # If it is a link : the link. Else : every thing else
 
-df["lien_resul"] = np.where(df["FileNameResults"].apply(j), df["FileNameResults"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf")
-df["lien_resul1"] = np.where(df["FileNameResults"].apply(j), df["FileNameResults"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + "1.pdf")
+df["lien_resul"] = np.where(df["FileNameResults"].apply(is_url), df["FileNameResults"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + ".pdf")
+df["lien_resul1"] = np.where(df["FileNameResults"].apply(is_url), df["FileNameResults"], "./" + df["Discipline"].map(dict_discipline) + "/resultats/resultats_" + df["FileName"] + "1.pdf")
 
 #engagés ou horaires
 df["lien_engages"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Liste_engages_" + df["FileName"] + ".pdf"
 df["lien_horaires_depart"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Horaires_depart_" + df["FileName"] + ".pdf"
 
+current_season_year = 2021
 
 today = datetime.date.today()
 if datetime.datetime.now().hour < 14:
     today = today - datetime.timedelta(1)
 
-current_year = today.year
-current_month = today.month
-
-def f(x):
+def file_exists(x):
     return os.path.isfile(x)
-def g(x):
-    if f(x) == False:
+
+def get_file_time(x):
+    if file_exists(x) == False:
         return 0
     return os.path.getmtime(x)
 
-def get_date(date_string):
+def get_date(date_string, current_season_year):
+
     '''Extracts  the date under datetime day format from the Date column of the xlsx file'''
     liste_mois={"janvier":1, "février":2, "mars":3, "avril":4, "mai":5, "juin":6, "juillet":7, "août":8, "septembre":9, "octobre":10, "novembre":11, "décembre":12}
+    
+    # examples : 23 et 24 janvier
+    # examples : 12 janvier 2022
+    # 23-24 janvier convient
+    # 23,24 janvier ne convient pas
+
     day_found = False
     month_found = False
     date_string=str(date_string)
+    date_string.replace("-", " ")
+    date_string.replace(",", " ")
+    date_string.replace("/", " ")
+    year = current_season_year
+    day = 100 # to make sure there's no error
 
     for elem in date_string.split():
-        if day_found==False and elem.isdigit():
-            day = int(elem)
-            day_found = True
+        if elem.isdigit():
+            if day_found==False and len(elem)<=2:
+                day = int(elem)
+                day_found = True
+            elif len(elem)==4:
+                year = int(elem)
         elif month_found==False and elem.lower() in liste_mois.keys():
             month = elem.lower()
             month_found = True
+
 
     if month_found == False or day_found == False or day>31:
         print(date_string)
         print("ATTENTION : Format de date incorrect")
 
-    return datetime.date(2021, liste_mois[month], day)
+    return datetime.date(year, liste_mois[month], day)
 
 
 df["publi_dispo"] = False
@@ -82,29 +97,29 @@ df["resul_dispo"] = False
 df["resul1_dispo"] = False
 df["horaires_dispo"] = False
 df["engages_dispo"] = False
-df["date_obj"] = df["Date"].apply(get_date)
+df["date_obj"] = df["Date"].apply(get_date, current_season_year=current_season_year)
 
 for i in range(len(df)):
-    if j(df.iloc[i]['lien_publi']): #link
+    if is_url(df.iloc[i]['lien_publi']): #link
         df.iloc[i, df.columns.get_loc('publi_dispo')] = True
-    if f(df.iloc[i]['lien_publi']) == True:
-        df.iloc[i, df.columns.get_loc('publi_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi'])), "%a %b %d %H:%M:%S %Y").year == 2021   )
-    if f(df.iloc[i]['lien_publi1']) == True:
-        df.iloc[i, df.columns.get_loc('publi1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_publi1'])), "%a %b %d %H:%M:%S %Y").year == 2021   )
+    if file_exists(df.iloc[i]['lien_publi']) == True:
+        df.iloc[i, df.columns.get_loc('publi_dispo')] = (   datetime.datetime.strptime(time.ctime(get_file_time(df.iloc[i]['lien_publi'])), "%a %b %d %H:%M:%S %Y").year >= current_season_year   )
+    if file_exists(df.iloc[i]['lien_publi1']) == True:
+        df.iloc[i, df.columns.get_loc('publi1_dispo')] = (   datetime.datetime.strptime(time.ctime(get_file_time(df.iloc[i]['lien_publi1'])), "%a %b %d %H:%M:%S %Y").year >= current_season_year   )
 
-    if j(df.iloc[i]['lien_resul']): #link
+    if is_url(df.iloc[i]['lien_resul']): #link
         df.iloc[i, df.columns.get_loc('resul_dispo')] = True
-    if f(df.iloc[i]['lien_resul']) == True:
-        df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year == 2021    )
-    if f(df.iloc[i]['lien_resul1']) == True:
-        df.iloc[i, df.columns.get_loc('resul1_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_resul1'])), "%a %b %d %H:%M:%S %Y").year == 2021   )
+    if file_exists(df.iloc[i]['lien_resul']) == True:
+        df.iloc[i, df.columns.get_loc('resul_dispo')] = (   datetime.datetime.strptime(time.ctime(get_file_time(df.iloc[i]['lien_resul'])), "%a %b %d %H:%M:%S %Y").year >= current_season_year  )
+    if file_exists(df.iloc[i]['lien_resul1']) == True:
+        df.iloc[i, df.columns.get_loc('resul1_dispo')] = (   datetime.datetime.strptime(time.ctime(get_file_time(df.iloc[i]['lien_resul1'])), "%a %b %d %H:%M:%S %Y").year >= current_season_year  )
 
-    if f(df.iloc[i]['lien_horaires_depart']) == True:
+    if file_exists(df.iloc[i]['lien_horaires_depart']) == True:
             #start list is displayed if : current_year is correct and race has not already taken place (date_race > today, with today starting at 2pm)
-        df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year == 2021 and df.iloc[i]["date_obj"] > today)
-    if f(df.iloc[i]['lien_engages']) == True:
+        df.iloc[i, df.columns.get_loc('horaires_dispo')] = (   datetime.datetime.strptime(time.ctime(get_file_time(df.iloc[i]['lien_horaires_depart'])), "%a %b %d %H:%M:%S %Y").year >= current_season_year and df.iloc[i]["date_obj"] > today)
+    if file_exists(df.iloc[i]['lien_engages']) == True:
         #start list is displayed if : current_year is correct and race has not already taken place (date_race > today, with today starting at 2pm)
-        df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(g(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year == 2021 and df.iloc[i]["date_obj"] > today)
+        df.iloc[i, df.columns.get_loc('engages_dispo')] = (   datetime.datetime.strptime(time.ctime(get_file_time(df.iloc[i]['lien_engages'])), "%a %b %d %H:%M:%S %Y").year >= current_season_year and df.iloc[i]["date_obj"] > today)
 
 # For home page, find which the first course that has not happened (next one) 
 
