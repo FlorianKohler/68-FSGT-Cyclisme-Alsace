@@ -39,7 +39,7 @@ df["lien_resul1"] = np.where(df["FileNameResults"].apply(is_url), df["FileNameRe
 df["lien_engages"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Liste_engages_" + df["FileName"] + ".pdf"
 df["lien_horaires_depart"] = "./" + df["Discipline"].map(dict_discipline) + "/publications/Horaires_depart_" + df["FileName"] + ".pdf"
 
-current_season_year = 2021
+current_season_year = 2022
 
 today = datetime.date.today()
 if datetime.datetime.now().hour < 14:
