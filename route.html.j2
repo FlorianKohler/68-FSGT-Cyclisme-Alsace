@@ -28,9 +28,13 @@
 				</td>
       <td class="">{{line["Club"]}}</td>
       <td class="text-center">
-        {% if line["publi_dispo"] == True %}
-        <a href="{{ line["lien_publi"] }}">
+        {% if line["publi_dossardeur"] == True %}
+        	Inscriptions via Dossardeur
+        {% else %}
+        	{% if line["publi_dispo"] == True %}
+	        <a href="{{ line["lien_publi"] }}">
 				<img  src="./Styling/images/loupe.png" width="22" height="22"></a>
+        {% endif %}
         {% endif %}
 				{% if line["horaires_dispo"] == True %}
         <a href="{{ line["lien_horaires_depart"] }}">
