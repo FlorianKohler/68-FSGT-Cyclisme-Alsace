@@ -31,7 +31,6 @@ def is_dossardeur(a):
     return(a.startswith("Inscriptions via"))
 
 df["publi_dossardeur"] = np.where(df["FileName"].apply(is_dossardeur), True, False)
-print(df)
 
 df["lien_publi"] = np.where(df["FileName"].apply(is_url), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + ".pdf")
 df["lien_publi1"] = np.where(df["FileName"].apply(is_url), df["FileName"],"./" + df["Discipline"].map(dict_discipline) + "/publications/publication_" + df["FileName"] + "1.pdf")
