@@ -28,7 +28,7 @@ def is_url(a):
     return(a.startswith("http"))
 
 def is_dossardeur(a):
-    return(a.startswith("Inscriptions via"))
+    return(a.startswith("Inscriptions"))
 
 df["publi_dossardeur"] = np.where(df["FileName"].apply(is_dossardeur), True, False)
 
